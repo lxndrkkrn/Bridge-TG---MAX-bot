@@ -38,14 +38,16 @@ public class UserService {
 
     @Transactional
     public void removeUser(String token) {
-            userRepository.deleteById(userRepository.findByUserRegisterToken(token).getId());
+            userRepository.deleteById(userRepository.findByUserRegisterToken(token).get().getId());
+    }
+
+    public String findInfoUser(String token) {
+        return userRepository.findByUserRegisterToken(token)
+                .map(user -> "Информация о токене: " + user.toString()) // Если нашли
+                .orElse("Ошибка: Пользователь с таким токеном не найден.");
     }
 
     @Transactional
-    public User findInfoUser(String token) {
-        return userRepository.findByUserRegisterToken(token);
-    }
-
     public String createToken() {
 
         StringBuilder token = new StringBuilder(29);

@@ -1,5 +1,6 @@
 package com.example.bridgebot_tg;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -24,6 +25,13 @@ public class TelegramController extends TelegramLongPollingBot {
         this.userStateService = userStateService;
     }
 
+    @Value("${bot.token}")
+    private String botToken;
+
+    @Value("${bot.admin.username}")
+    private String adminUsername;
+
+
     @Override
     public String getBotUsername() {
         return "BridgeTG_MAX_bot";
@@ -31,7 +39,7 @@ public class TelegramController extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "8521753323:AAFVCUtKO-q-aTwT1O3qwTcHTFY3cPWR4HQ";
+        return botToken;
     }
 
     @Override
@@ -45,7 +53,7 @@ public class TelegramController extends TelegramLongPollingBot {
             SendMessage sm = new SendMessage();
             sm.setChatId(chatId);
 
-            if (tgUser.equals("lxndrkkrn")) {
+            if (tgUser.equals(adminUsername)) {
                 if ("/admin".equals(text)) {
                     sm.setText("Панель активирована");
                     sm.setReplyMarkup(keyBoards.AdminReplyKeyboard());
